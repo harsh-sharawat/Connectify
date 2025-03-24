@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+
+{% block title %}Login{% endblock title %}
+{% block content %}
+
+<div class = ' d-flex justify-content-center align-items-center'>
+    <form method = 'POST' action = '{% url 'login' %}'>
+        {% csrf_token %}
+        <div class="mb-3">
+        <label for="exampleInputEmail1"  class="form-label">User Name</label>
+        <input type="text" required name = 'username' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        
+        <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" name = 'password' class="form-control" id="exampleInputPassword1" required >
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Login</button>
+
+        <a href="{% url 'register' %}" class= "btn btn-primary">New User? Sign Up</a>
+    </form>
+</div>
+{% endblock content %}
+
+
+
