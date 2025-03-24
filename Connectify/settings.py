@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'core',
     'livereload',
     'Authentication',
+    'room',
 ]
 
 MIDDLEWARE = [

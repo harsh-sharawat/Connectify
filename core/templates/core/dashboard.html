@@ -2,11 +2,12 @@
 
 {% block title %}Dashboard{% endblock title %}
 
+{% block nav_elements %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'create_room' %}">Create Room</a>
+    </li>
+{% endblock nav_elements %}
+
 {% block content %}
-
-    <p>this is Dashboard</p>
-
+    <p>This is Dashboard</p>
 {% endblock content %}
-
-
-
