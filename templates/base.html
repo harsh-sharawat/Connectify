@@ -50,21 +50,36 @@
     </nav>
     
 
-
+<div class = 'container p-2'>
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% if message.tags == 'error' %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+
+            {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
-
+</div>
 
     {% block content %}
 
     
     
     {% endblock content %}
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

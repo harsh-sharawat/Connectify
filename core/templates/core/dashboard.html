@@ -9,5 +9,29 @@
 {% endblock nav_elements %}
 
 {% block content %}
-    <p>This is Dashboard</p>
+<div class = 'container w-50 p-3 '>
+   {% for room in rooms %}
+        <div class="card p-2" >
+            <div class="card-body">
+            <h5 class="card-title">{{room.room_name}}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{room.tags}}</h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary">Admin: {{room.created_by.username}}</h6>
+            <p class="card-text">{{room.description}}</p>
+            <p class="card-text">Members: {{ room.members.count }}</p>
+            {% if room.is_private == False %}
+            <a href="#" class="card-link">Enter room</a>
+            {% endif %}
+            {% if user != room.created_by %}
+                {% if user in room.members.all %}
+                    <a href="{% url 'leave_room' room.id %}" class="card-link">Leave</a>
+                {% else %}
+                    <a href="{% url 'join_room' room.id %}" class="card-link">Join</a>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+        <br>
+   
+   {% endfor %}
+</div>
 {% endblock content %}

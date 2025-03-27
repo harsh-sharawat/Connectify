@@ -4,6 +4,7 @@ from .form import Create_room
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
+from .models import Room, Chat
 
 # Create your views here.
 @login_required
@@ -33,6 +34,38 @@ def create_room(request):
         form = Create_room()
     return render(request, 'room/create_room.html', {'form':form})
         
+@login_required
+def join_room(request,room_id):
+    try:
+        room = Room.objects.get(id = room_id)
+
+    except Room.DoesNotExist:
+        messages.error(request, 'this room does not exists')
+        return redirect('dashboard')
+
+    room.members.add(request.user)
+    room.save()
+
+    messages.success(request, "room joined successfully!")
+    return redirect('dashboard')
+
+
+@login_required
+def leave_room(request, room_id):
+    try:
+        room = Room.objects.get(id = room_id)
+
+    except Room.DoesNotExist:
+        messages.error(request, 'this room does not exists')
+        return redirect('dashboard')
+
+    room.members.remove(request.user)
+    room.save()
+
+    messages.success(request, "room left successfully!")
+    return redirect('dashboard')
+
+
 
 
 

@@ -8,6 +8,8 @@ from .form import Register
 
 
 def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
 
     if request.method == "POST":
         username = request.POST['username']
