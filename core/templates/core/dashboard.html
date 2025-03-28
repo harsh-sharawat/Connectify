@@ -19,7 +19,7 @@
             <p class="card-text">{{room.description}}</p>
             <p class="card-text">Members: {{ room.members.count }}</p>
             {% if room.is_private == False %}
-            <a href="#" class="card-link">Enter room</a>
+            <a href="{% url 'feed' room.id %}" class="card-link">Enter room</a>
             {% endif %}
             {% if user != room.created_by %}
                 {% if user in room.members.all %}

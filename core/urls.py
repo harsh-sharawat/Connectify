@@ -7,5 +7,7 @@ urlpatterns = [
     path('au/',include('Authentication.urls')),
     path('dashboard/' ,views.dashboard , name = 'dashboard'),
     path('room/',include('room.urls')),
+    path('feed/',include('feed.urls')),
+
     
 ]

@@ -7,7 +7,7 @@ from django.utils.timezone import now
 
 class Room(models.Model):
     room_name = models.CharField(max_length=100)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'created_rooms')
     created_at = models.DateTimeField(auto_now_add = True)
 
     description = models.CharField(max_length=500)
@@ -22,7 +22,7 @@ class Room(models.Model):
 
 class Chat(models.Model):
 
-    room = models.OneToOneField(Room,on_delete=models.CASCADE)
+    room = models.OneToOneField(Room,on_delete=models.CASCADE, related_name= 'chat')
     messages = models.JSONField(default = list)
     
     def add_message(self , sender, content):

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Chat{% endblock title %}
+
+{% block content %}
+
+<div> 
+    <textarea id="chat-log" cols="100" rows="20" readonly>
+        {% for message in history %}
+            {{ message.sender }}: {{ message.content }}
+        {% endfor %}
+    </textarea><br>
+
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send">
+    
+    {{ room_id|json_script:"room-id" }}
+    {% comment %} {{user|json_script:"sender"}} {% endcomment %}
+</div>
+
+<script>
+    const room_id_element = document.getElementById('room-id');
+    {% comment %} const sender_name = document.getElementById('sender') {% endcomment %}
+
+    if (!room_id_element) {
+        console.error("Room ID element not found!");
+    } else {
+        const room_id = JSON.parse(room_id_element.textContent).trim();
+
+        if (!room_id) {
+            console.error("Room ID is missing or invalid.");
+        } else {
+            const chatSocket = new WebSocket(
+                'ws://'
+                + window.location.host
+                + '/ws/feed/'
+                + room_id
+                + '/'
+            );
+
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                const chatLog = document.querySelector('#chat-log');
+                chatLog.value += `${data.user}: ${data.message}\n`;
+                chatLog.scrollTop = chatLog.scrollHeight;
+            };
+
+            chatSocket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
+
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value.trim();
+                
+                if (message) {
+                    chatSocket.send(JSON.stringify({
+                        'message': message
+                    }));
+                    messageInputDom.value = '';
+                }
+            };
+
+            document.querySelector('#chat-message-input').onkeyup = function(e) {
+                if (e.key === 'Enter') {
+                    document.querySelector('#chat-message-submit').click();
+                }
+            };
+        }
+    }
+</script>
+
+{% endblock content %}
