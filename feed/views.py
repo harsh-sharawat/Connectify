@@ -23,22 +23,11 @@ def feed(request, room_id):
        
     except Chat.DoesNotExist:
         chat = Chat.objects.create(room = room)
-
-    
-        
-        
-        
-        
-
-        
-
-
-
-
-    
+   
 
     context = {
-        'room_id': str(room_id),
+        'room_name' : room.room_name,
+        'room_id' : str(room_id),
         'history' : chat.messages,
         'user' : request.user.username
         

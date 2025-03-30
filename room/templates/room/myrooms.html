@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex">
+    <!-- Sidebar Filter -->
+    <div class="bg-light p-4 shadow rounded me-4" style="width: 250px; height: fit-content; border-radius: 15px;">
+        <h4 class="text-primary fw-bold">Filter Rooms</h4>
+        <select id="roomFilter" class="form-select mt-3">
+            <option value="all">All</option>
+            <option value="created">My Creations</option>
+            <option value="joined">Joined</option>
+        </select>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-grow-1">
+        <div id="roomList">
+            {% for room in rooms %}
+                <div class="card shadow-lg border-0 room-item" 
+                     style="border-radius: 15px; margin-bottom: 15px;" 
+                     data-created-by="{{ room.created_by.username }}" 
+                     data-joined="{% if user in room.members.all %}true{% else %}false{% endif %}">
+                    
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold text-primary">{{ room.room_name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-secondary">{{ room.tags }}</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            Admin: <span class="fw-semibold">{{ room.created_by.username }}</span>
+                        </h6>
+                        <p class="card-text text-dark">{{ room.description }}</p>
+                        <p class="card-text"><strong>Members:</strong> {{ room.members.count }}</p>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'feed' room.id %}" class="btn btn-primary btn-sm">Enter Room</a>
+
+                            {% if user != room.created_by %}
+                                {% if user in room.members.all %}
+                                    <a href="{% url 'leave_room' room.id %}" class="btn btn-danger btn-sm">Leave</a>
+                                {% else %}
+                                    <a href="{% url 'join_room' room.id %}" class="btn btn-success btn-sm">Join</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Filtering -->
+<script>
+    document.getElementById("roomFilter").addEventListener("change", function() {
+        let filterValue = this.value;
+        let rooms = document.querySelectorAll(".room-item");
+
+        rooms.forEach(room => {
+            let isCreatedByUser = room.getAttribute("data-created-by") === "{{ user.username }}";
+            let isJoined = room.getAttribute("data-joined") === "true";
+
+            if (filterValue === "all") {
+                room.style.display = "block";
+            } else if (filterValue === "created" && isCreatedByUser) {
+                room.style.display = "block";
+            } else if (filterValue === "joined" && isJoined && !isCreatedByUser) {
+                room.style.display = "block";
+            } else {
+                room.style.display = "none";
+            }
+        });
+    });
+</script>
+
+{% endblock content %}

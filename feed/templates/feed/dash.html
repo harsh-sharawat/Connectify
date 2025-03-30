@@ -7,7 +7,7 @@
 <div class="container mt-4">
     <div class="card shadow border-0" style="border-radius: 15px;">
         <div class="card-body">
-            <h3 class="card-title text-center text-primary">Chat Room</h3>
+            <h3 class="card-title text-center text-primary">{{room_name}}</h3>
 
             <div id="chat-log" class="border p-3 mb-3 rounded bg-light" style="height: 300px; overflow-y: auto;">
                 {% for message in history %}
@@ -32,6 +32,9 @@
 {{ room_id|json_script:"room-id" }}
 
 <script>
+
+
+    
     const room_id_element = document.getElementById('room-id');
 
     if (!room_id_element) {

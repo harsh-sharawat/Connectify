@@ -66,6 +66,20 @@ def leave_room(request, room_id):
     return redirect('dashboard')
 
 
+@login_required
+def my_rooms(request):
+
+    rooms = request.user.joined_rooms.all()
+    # print(type(rooms))
+
+
+
+
+    context = {
+        'rooms' : rooms
+    }
+    return render(request, 'room/myrooms.html',context)
+
 
 
 

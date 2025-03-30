@@ -25,6 +25,12 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Rooms</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'my_rooms' %}">My Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'create_room' %}">Create Room</a>
+                    </li>   
     
                     <!-- This is where dashboard.html can insert extra nav items -->
                     {% block nav_elements %}{% endblock nav_elements %}
