@@ -1,21 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Create room{% endblock title %}
+{% block title %}Create Room{% endblock title %}
 
-{% block content %}<div class = "d-flex justify-content-center align-items-center p-3">
-
-    <form action="" method = "POST">
-        {% csrf_token %}
-        {% if form.errors %}
-            {% for error in form.errors %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card shadow-lg border-0 p-4 w-50" style="border-radius: 15px;">
+        <h3 class="text-center text-primary mb-3">Create a Room</h3>
+        
+        <form action="" method="POST">
+            {% csrf_token %}
             
-                {{error}}
-            {% endfor %}
-        {% endif %}
-     
-        {{form.as_p}}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.errors %}
+                        <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-        <button type = 'submit'  class ="btn btn-primary">Create</button>
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
 
-
-    </form>
-</div>{% endblock content %}
+            <button type="submit" class="btn btn-primary w-100">Create Room</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

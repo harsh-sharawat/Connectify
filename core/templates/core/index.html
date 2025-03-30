@@ -1,11 +1,27 @@
-{% extends "base.html" %}
-
-{% block title %}Index{% endblock title %}
-{% block content %}
-
-   <p>welcome! to index page</p>
-
-
-
-
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connectify</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column justify-content-center align-items-center vh-100 text-white text-center" style="background: linear-gradient(to right, #007bff, #6f42c1);">
+    
+    <div class="container">
+        <h1 class="display-3 fw-bold animated fadeInDown">Welcome to <span style="color: #ffd700;">Connectify</span></h1>
+        <p class="lead animated fadeInUp mt-2">Seamless communication & effortless collaboration at your fingertips.</p>
+        
+        <div class="mt-4">
+            <p class="fs-5">🚀 <strong>Instant Messaging:</strong> Chat in real-time with friends and colleagues.</p>
+            <p class="fs-5">💡 <strong>Collaborate in Rooms:</strong> Create or join rooms for group discussions and teamwork.</p>
+            {% comment %} <p class="fs-5">📂 <strong>Seamless File Sharing:</strong> Share documents, images, and more with ease.</p> {% endcomment %}
+            {% comment %} <p class="fs-5">🔒 <strong>Secure & Reliable:</strong> Your data is encrypted and protected.</p> {% endcomment %}
+        </div>
+        
+        <a href="{% url 'dashboard' %}" class="btn btn-lg btn-light shadow mt-4 px-4 py-2 fw-bold" style="color: #007bff; border-radius: 30px;">Get Started</a>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

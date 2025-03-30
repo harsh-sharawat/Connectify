@@ -1,28 +1,47 @@
 {% extends "base.html" %}
 {% block title %}Register{% endblock title %}
 
-
 {% block content %}
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card shadow-lg p-4" style="width: 28rem;">
+        <h3 class="text-center mb-3">Create an Account</h3>
 
-<div class = "d-flex justify-content-center align-items-center p-3">
-
-    <form action="" method = "POST">
-        {% csrf_token %}
-        {% if form.errors %}
-            {% for error in form.errors %}
+        <form action="" method="POST">
+            {% csrf_token %}
             
-                {{error}}
-            {% endfor %}
-        {% endif %}
-     
-        {{form.as_p}}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-        <button type = 'submit'  class ="btn btn-primary">Register</button>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Username</label>
+                {{ form.username }}
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label fw-bold">Email</label>
+                {{ form.email }}
+            </div>
 
-    </form>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Password</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">Already have an account? Login</a>
+            </div>
+        </form>
+    </div>
 </div>
-
 {% endblock content %}
-
-

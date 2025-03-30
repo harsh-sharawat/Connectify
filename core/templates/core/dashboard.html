@@ -9,29 +9,30 @@
 {% endblock nav_elements %}
 
 {% block content %}
-<div class = 'container w-50 p-3 '>
+<div class="container w-50 p-3">
    {% for room in rooms %}
-        <div class="card p-2" >
-            <div class="card-body">
-            <h5 class="card-title">{{room.room_name}}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">{{room.tags}}</h6>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Admin: {{room.created_by.username}}</h6>
-            <p class="card-text">{{room.description}}</p>
-            <p class="card-text">Members: {{ room.members.count }}</p>
-            {% if room.is_private == False %}
-            <a href="{% url 'feed' room.id %}" class="card-link">Enter room</a>
-            {% endif %}
-            {% if user != room.created_by %}
-                {% if user in room.members.all %}
-                    <a href="{% url 'leave_room' room.id %}" class="card-link">Leave</a>
-                {% else %}
-                    <a href="{% url 'join_room' room.id %}" class="card-link">Join</a>
-                {% endif %}
-            {% endif %}
+        <div class="card shadow-lg border-0" style="border-radius: 15px;">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold text-primary">{{ room.room_name }}</h5>
+                <h6 class="card-subtitle mb-2 text-secondary">{{ room.tags }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Admin: <span class="fw-semibold">{{ room.created_by.username }}</span></h6>
+                <p class="card-text text-dark">{{ room.description }}</p>
+                <p class="card-text"><strong>Members:</strong> {{ room.members.count }}</p>
+                <div class="d-flex justify-content-between">
+                    {% if room.is_private == False %}
+                        <a href="{% url 'feed' room.id %}" class="btn btn-primary btn-sm">Enter Room</a>
+                    {% endif %}
+                    {% if user != room.created_by %}
+                        {% if user in room.members.all %}
+                            <a href="{% url 'leave_room' room.id %}" class="btn btn-danger btn-sm">Leave</a>
+                        {% else %}
+                            <a href="{% url 'join_room' room.id %}" class="btn btn-success btn-sm">Join</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
         <br>
-   
    {% endfor %}
 </div>
 {% endblock content %}
