@@ -74,7 +74,7 @@
             },
             success: function(response) {
                 $('#votecount-' + roomid).text(response.upvotes);
-                updateVoteButtons(roomid, response.state);
+         
                 button.prop('disabled', false);
             },
             error: function(response) {
