@@ -9,6 +9,7 @@
 {% block content %}
 <div class="container w-50 p-3">
    {% for room in rooms %}
+
         <div class="card shadow-lg border-0" style="border-radius: 15px;">
             <div class="card-body p-4">
                 <h5 class="card-title fw-bold text-primary">{{ room.room_name }}</h5>
@@ -27,10 +28,63 @@
                             <a href="{% url 'join_room' room.id %}" class="btn btn-success btn-sm">Join</a>
                         {% endif %}
                     {% endif %}
+
                 </div>
+                <div class="d-flex">
+                    <button id="upvote-btn-{{ room.id }}" class="vote-btn" data-room-id="{{ room.id }}" data-action="upvote">👍</button>
+                    <p class="p-2" id="votecount-{{ room.id }}">{{ room.votecount }}</p>
+                    <button id="downvote-btn-{{ room.id }}" class="vote-btn" data-room-id="{{ room.id }}" data-action="downvote">👎</button>
+                </div>
+                
             </div>
         </div>
         <br>
+
+
    {% endfor %}
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    {% comment %} $(document).ready(function() {
+        {% for room in rooms %}
+            {% if user.id|stringformat:"s" in room.voters %}
+                var initialState = {{ room.voters[user.id|stringformat:"s"]}};
+            {% else %}
+                var initialState = 0;
+            {% endif %}
+            updateVoteButtons({{ room.id }}, initialState);
+        {% endfor %}
+    }); {% endcomment %}
+   
+
+    $('.vote-btn').click(function() {
+        var button = $(this);
+        button.prop('disabled', true);
+    
+        var roomid = button.data('room-id');
+        var action = button.data('action');
+    
+        $.ajax({
+            url: "{% url 'vote' %}",
+            type: "POST",
+            data: {
+                'room_id': roomid,
+                'action': action,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(response) {
+                $('#votecount-' + roomid).text(response.upvotes);
+                updateVoteButtons(roomid, response.state);
+                button.prop('disabled', false);
+            },
+            error: function(response) {
+                alert('Error voting.');
+                button.prop('disabled', false);
+            }
+        });
+    });
+    
+  </script>
+
 {% endblock content %}
+

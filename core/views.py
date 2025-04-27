@@ -12,7 +12,7 @@ def index(request):
 @login_required
 def dashboard(request):
 
-    rooms = Room.objects.all()
+    rooms = Room.objects.all().order_by('-votecount')
 
 
     context = {'rooms':rooms}

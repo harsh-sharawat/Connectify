@@ -17,6 +17,12 @@ class Room(models.Model):
 
     is_private = models.BooleanField(default=False)
 
+    voters = models.JSONField(default=dict, blank = True)
+    votecount = models.IntegerField(default= 0, blank= True)
+
+    def __str__(self):
+        return self.room_name
+
     
 
 

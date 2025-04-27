@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from .form import Create_room
 # from .models import Room
@@ -84,4 +85,61 @@ def my_rooms(request):
 
 
 
-    
+def vote(request):
+    if request.method == "POST":
+        room_id = request.POST.get('room_id')
+        action = request.POST.get('action')
+
+        new_state = 0
+
+        room = Room.objects.get(id = room_id)
+        userid = str(request.user.id)
+        if userid in room.voters.keys():
+            previous = room.voters[userid]
+        else:
+            previous = 0
+
+        if action == "upvote":
+            if previous==0:
+                room.votecount += 1 
+                room.voters[userid] =1
+                new_state = 1
+
+                
+            else:
+                if previous == 1 :
+                    room.votecount -=1
+                    del room.voters[userid]
+                    
+                else:
+                    room.votecount +=2
+
+                    room.voters[userid] = 1
+                    new_state =1
+            
+        elif action == "downvote":
+            if previous==0:
+                room.votecount -= 1 
+                room.voters[userid] = -1
+                new_state = -1
+                
+                
+            else:
+                if previous == -1 :
+                    room.votecount +=1
+                    del room.voters[userid]
+                else:
+                    room.votecount -=2
+                    room.voters[userid] = -1
+                    new_state = -1
+
+        room.save()
+
+        return JsonResponse({
+            'upvotes': room.votecount,
+            'state':new_state,
+            
+        })
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
